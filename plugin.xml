@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="indexer-discovery" name="DiscoveryServiceIndexWriter" version="1.0.0"
+        provider-name="nutch.apache.org">
+
+  <runtime>
+    <library name="indexer-discovery.jar">
+      <export name="*" />
+    </library>
+
+    <library name="discovery-3.5.3.jar"/>
+    <library name="scala-library-2.12.1.jar"/>
+
+  </runtime>
+
+  <requires>
+    <import plugin="nutch-extensionpoints" />
+  </requires>
+
+  <extension id="com.ibm.watson.discovery.nutch.discovery"
+             name="Watson Discovery Service Index Writer"
+             point="org.apache.nutch.indexer.IndexWriter">
+    <implementation id="DiscoveryServiceIndexWriter"
+                    class="com.ibm.watson.discovery.nutch.DiscoveryServiceIndexWriter" />
+  </extension>
+
+</plugin>

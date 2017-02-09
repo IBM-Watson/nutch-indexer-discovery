@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        // version numbering based on annotated tags via git describe
+        classpath group: 'com.cinnober.gradle', name: 'semver-git',       version: '2.2.0'
+    }
+}
+
+plugins {
+    id 'scala'
+}
+
+ext {
+    // sets version place to increment in semver-git
+    nextVersion = 'patch'
+    // sets suffix of developer builds in semver-git
+    snapshotSuffix = "dev+${System.getProperty("user.name")}-<count>-g<sha>"
+    // what Offering Management and the rest of the world call this project
+    externalProductName = "Watson Discovery Service indexer for Apache Nutch"
+}
+
+group 'com.ibm.watson.discovery.nutch'
+
+
+apply plugin: 'com.cinnober.gradle.semver-git'
+apply plugin: 'scala'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.scala-lang:scala-library:2.12.1'
+    compile 'com.ibm.watson.developer_cloud:discovery:3.5.3'
+    compile 'org.apache.nutch:nutch:2.3.1'
+    compile 'org.apache.hadoop:hadoop-common:3.0.0-alpha2'
+}
