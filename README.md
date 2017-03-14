@@ -13,3 +13,7 @@ Use Nutch's help feature to see the configuration properties beginning with
 ## Building
 
     ./gradlew
+
+## Contributing
+
+Look at the Nutch source in `src/plugin/indexer-*` for examples of other indexer plugins. **This plugin still needs an assemble task that builds a plugin artifact that Nutch can recognize.** 
