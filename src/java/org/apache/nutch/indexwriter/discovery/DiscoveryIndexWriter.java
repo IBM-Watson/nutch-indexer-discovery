@@ -44,7 +44,6 @@ public class DiscoveryIndexWriter implements IndexWriter {
     @Override
     public void open(Configuration job) throws IOException {
         endpoint = job.get(DiscoveryConstants.ENDPOINT);
-        port = job.getInt(DiscoveryConstants.PORT, 80);
         username = job.get(DiscoveryConstants.USERNAME);
         password = job.get(DiscoveryConstants.PASSWORD);
         collectionId = job.get(DiscoveryConstants.COLLECTION_ID);
@@ -150,7 +149,7 @@ public class DiscoveryIndexWriter implements IndexWriter {
 
     private void checkNotNull(String key, String value) {
         if (StringUtils.isBlank(value)) {
-            String message = "Missing " + value + " Should be set in nutch-site.xml";
+            String message = "Missing " + key + " Should be set in nutch-site.xml";
             message += "\n" + describe();
             LOG.error(message);
             throw new RuntimeException(message);
