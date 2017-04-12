@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin id="indexer-discovery" name="DiscoveryServiceIndexWriter" version="1.0.0"
-        provider-name="nutch.apache.org">
+<plugin id="indexer-discovery" name="DiscoveryIndexWriter" version="1.0.0"
+  provider-name="nutch.apache.org">
 
-  <runtime>
+<runtime>
     <library name="indexer-discovery.jar">
       <export name="*" />
     </library>
-
-    <library name="discovery-3.5.3.jar"/>
-    <library name="scala-library-2.12.1.jar"/>
-
+    <library name="discovery-3.7.2.jar"/>
+    <library name="core-3.7.2.jar"/>
+    <library name="okhttp-3.6.0.jar"/>
+    <library name="okio-1.11.0.jar"/>
+    <library name="okhttp-urlconnection-3.6.0.jar"/>
+    <library name="gson-2.8.0.jar"/>
+    <library name="commons-lang3-3vi.4.jar"/>
+    <library name="jersey-jsr166e-2.22.2.jar"/>
+    <library name="logging-interceptor-3.6.0.jar"/>
   </runtime>
 
   <requires>
     <import plugin="nutch-extensionpoints" />
   </requires>
 
-  <extension id="com.ibm.watson.discovery.nutch.discovery"
-             name="Watson Discovery Service Index Writer"
-             point="org.apache.nutch.indexer.IndexWriter">
-    <implementation id="DiscoveryServiceIndexWriter"
-                    class="com.ibm.watson.discovery.nutch.DiscoveryServiceIndexWriter" />
+  <extension id="org.apache.nutch.indexer.discovery"
+    name="Discovery Index Writer"
+    point="org.apache.nutch.indexer.IndexWriter">
+    <implementation id="DiscoveryIndexWriter"
+      class="org.apache.nutch.indexwriter.discovery.DiscoveryIndexWriter" />
   </extension>
 
 </plugin>
