@@ -35,21 +35,34 @@ Setting up HBase
 
 Setting up Nutch
 ----------------
+1. Copy this repo to ``$NUTCH_ROOT/src/plugin/``
 
-1. enable the HBase dependency in ``$NUTCH_ROOT/ivy/ivy.xml`` by uncommenting the line
+2. enable the HBase dependency in ``$NUTCH_ROOT/ivy/ivy.xml`` by uncommenting the line
 
   ```xml
   <dependency org="org.apache.gora" name="gora-hbase" rev="0.5" conf="*->default" />
   ```
 
-2. configure the HBase adapter by editing the `$NUTCH_ROOT/conf/gora.properties`:
+3. configure the HBase adapter by editing the `$NUTCH_ROOT/conf/gora.properties`:
 
   ```diff
   -#gora.datastore.default=org.apache.gora.mock.store.MockDataStore
   +gora.datastore.default=org.apache.gora.hbase.store.HBaseStore
   ```
+4. In order for ant to compile and deploy indexer-discovery plugin you need to edit the $NUTCH_ROOT/src/plugin/build.xml file.  You'll see a number of lines that look like
 
-3. build Nutch
+  ```xml
+  <ant dir="[plugin-name]" target="deploy" />
+  ```
+
+ Edit this block to add a line for your plugin before the </target> tag.
+
+  ```xml
+  <ant dir="indexer-discovery" target="deploy" />
+  <ant dir="indexer-discovery" target="clean" />
+  ```
+
+5. build Nutch
 
   ```shell
   $ cd $NUTCH_ROOT
@@ -59,7 +72,7 @@ Setting up Nutch
 
   This *can take a while* and creates ``$NUTCH_ROOT/runtime/local``.
 
-4. configure Nutch by editing ``$NUTCH_ROOT/runtime/local/conf/nutch-site.xml``:
+6. configure Nutch by editing ``$NUTCH_ROOT/runtime/local/conf/nutch-site.xml``:
 
   ```xml
   <configuration>
@@ -78,7 +91,7 @@ Setting up Nutch
     <property>
       <name>plugin.includes</name>
       <!-- do **NOT** enable the parse-html plugin, if you want proper HTML parsing. Use something like parse-tika! -->
-      <value>protocol-httpclient|urlfilter-regex|parse-(text|tika|js)|index-(basic|anchor)|query-(basic|site|url)|response-(json|xml)|summary-basic|scoring-opic|urlnormalizer-(pass|regex|basic)|indexer-elastic</value>
+      <value>protocol-httpclient|urlfilter-regex|parse-(text|tika|js)|index-(basic|anchor)|query-(basic|site|url)|response-(json|xml)|summary-basic|scoring-opic|urlnormalizer-(pass|regex|basic)|indexer-discovery</value>
     </property>
     <property>
       <name>db.ignore.external.links</name>
@@ -110,12 +123,12 @@ Setting up Nutch
     </property>
     <property>
       <name>discovery.collection.id</name>
-      <value>0aeeaa5c-a468-4bc1-a5ff-3026f6f31408</value>
+      <value></value>
     </property>
   </configuration>
   ```
 
-5. configure HBase integration by editing ``$NUTCH_ROOT/runtime/local/conf/hbase-site.xml``:
+7. configure HBase integration by editing ``$NUTCH_ROOT/runtime/local/conf/hbase-site.xml``:
 
   ```xml
   <configuration>
