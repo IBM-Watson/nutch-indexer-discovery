@@ -21,11 +21,11 @@
     <import plugin="nutch-extensionpoints" />
   </requires>
 
-  <extension id="org.apache.nutch.indexer.discovery"
+  <extension id="com.ibm.watson.indexwriter.discovery"
     name="Discovery Index Writer"
     point="org.apache.nutch.indexer.IndexWriter">
     <implementation id="DiscoveryIndexWriter"
-      class="org.apache.nutch.indexwriter.discovery.DiscoveryIndexWriter" />
+      class="com.ibm.watson.indexwriter.discovery.DiscoveryIndexWriter" />
   </extension>
 
 </plugin>

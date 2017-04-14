@@ -1,5 +1,5 @@
 
-package org.apache.nutch.indexwriter.discovery;
+package com.ibm.watson.indexwriter.discovery;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.nutch.indexer.IndexWriter;
 import org.apache.nutch.indexer.NutchDocument;
+import org.apache.nutch.indexwriter.discovery.DiscoveryConstants;
 import org.mortbay.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +26,10 @@ import com.ibm.watson.developer_cloud.discovery.v1.model.document.GetDocumentRes
 import com.ibm.watson.developer_cloud.http.HttpMediaType;
 
 /**
+ * Sends NutchDocuments to a configured Discovery collection.
  */
 public class DiscoveryIndexWriter implements IndexWriter {
+    private static final int DEFAULT_SLEEP_MILLIS = 500;
     public static Logger LOG = LoggerFactory.getLogger(DiscoveryIndexWriter.class);
     private String defaultIndex;
 
@@ -56,11 +59,6 @@ public class DiscoveryIndexWriter implements IndexWriter {
 
     @Override
     public void write(NutchDocument doc) throws IOException {
-        String id = (String) doc.getFieldValue("id");
-        String type = doc.getDocumentMeta().get("type");
-        if (type == null)
-            type = "doc";
-
         // Add each field of this doc to the index source
         Map<String, Object> documentValuesMap = new HashMap<String, Object>();
         for (String fieldName : doc.getFieldNames()) {
@@ -94,7 +92,7 @@ public class DiscoveryIndexWriter implements IndexWriter {
             documentReady = !getDocumentResponse.getStatus().equals(Document.Status.PROCESSING);
             try {
                 if (!documentReady) {
-                    Thread.sleep(500);
+                    Thread.sleep(DEFAULT_SLEEP_MILLIS);
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException("Interrupted");
@@ -127,6 +125,20 @@ public class DiscoveryIndexWriter implements IndexWriter {
     @Override
     public String describe() {
         StringBuffer sb = new StringBuffer("DiscoveryIndexWriter\n");
+        sb.append("\t").append(DiscoveryConstants.ENDPOINT)
+                .append(" : Discovery endpoint url\n");
+        sb.append("\t").append(DiscoveryConstants.USERNAME)
+                .append(" : Discovery Username  \n");
+        sb.append("\t").append(DiscoveryConstants.PASSWORD)
+                .append(" : Discovery password\n");
+        sb.append("\t").append(DiscoveryConstants.ENVIRONMENT_ID)
+                .append(" : Discovery Environment id\n");
+        sb.append("\t").append(DiscoveryConstants.COLLECTION_ID)
+                .append(" : Discovery Collection id\n");
+        sb.append("\t").append(DiscoveryConstants.CONFIGURATION_ID)
+                .append(" : Discovery Configuration id\n");
+        sb.append("\t").append(DiscoveryConstants.API_VERSION)
+                .append(" : Discovery Api version\n");
         return sb.toString();
     }
 
@@ -148,7 +160,7 @@ public class DiscoveryIndexWriter implements IndexWriter {
     }
 
     private void checkNotNull(String key, String value) {
-        if (StringUtils.isBlank(value)) {
+        if (value == null || StringUtils.isBlank(value)) {
             String message = "Missing " + key + " Should be set in nutch-site.xml";
             message += "\n" + describe();
             LOG.error(message);

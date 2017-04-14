@@ -2,5 +2,5 @@
 /**
  * Index writer plugin for Watson Discovery</a>.
  */
-package org.apache.nutch.indexwriter.discovery;
+package com.ibm.watson.indexwriter.discovery;
 

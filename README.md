@@ -7,7 +7,7 @@ Requirements
 * [Nutch 2.3 RC](https://github.com/apache/nutch/archive/release-2.3.tar.gz) (yes, you **need** 2.3, 2.2 will not work)
 * [HBase 0.94.27](https://archive.apache.org/dist/hbase/hbase-0.94.27/hbase-0.94.27.tar.gz)
 
-Extract Nutch and HBase somewhere.We will refer to the Nutch root directory by ``$NUTCH_ROOT`` and the HBase root by ``$HBASE_ROOT``.
+Extract Nutch and HBase somewhere. We will refer to the Nutch root directory by ``$NUTCH_ROOT`` and the HBase root by ``$HBASE_ROOT``.
 
 Setting up HBase
 ----------------

@@ -1,5 +1,5 @@
 
-package org.apache.nutch.indexwriter.discovery;
+package com.ibm.watson.indexwriter.discovery;
 
 public interface DiscoveryConstants {
     public static final String DISCOVERY_PREFIX = "discovery.";
