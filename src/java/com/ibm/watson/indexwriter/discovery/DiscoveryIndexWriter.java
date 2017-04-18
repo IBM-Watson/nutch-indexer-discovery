@@ -4,6 +4,8 @@ package com.ibm.watson.indexwriter.discovery;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,43 +58,45 @@ public class DiscoveryIndexWriter implements IndexWriter {
 
     @Override
     public void write(NutchDocument doc) throws IOException {
-        indexNutchDocumentToDiscovery(doc);
-
+        String docId = extractId(doc);
+        InputStream documentStream = convertNutchDocToJsonStream(doc);
+        createDocumentInDiscovery(docId, documentStream);
     }
 
     @Override
     public void update(NutchDocument doc) throws IOException {
-        indexNutchDocumentToDiscovery(doc);
+        write(doc);
     }
 
-    private void indexNutchDocumentToDiscovery(NutchDocument doc) {
-        String docId = (String) doc.getFieldValue("id");
-        Log.debug("Nutch Document id: " + docId);
-
+    private InputStream convertNutchDocToJsonStream(NutchDocument doc) {
         Map<String, Object> documentValuesMap = new HashMap<String, Object>();
         for (String fieldName : doc.getFieldNames()) {
             if (doc.getFieldValue(fieldName) != null) {
                 documentValuesMap.put(fieldName, doc.getFieldValue(fieldName));
             }
         }
-        Gson gson = new Gson();
-        String documentJson = gson.toJson(documentValuesMap);
-        InputStream documentStream = new ByteArrayInputStream(documentJson.getBytes());
+        String documentJson = new Gson().toJson(documentValuesMap);
+        return new ByteArrayInputStream(documentJson.getBytes());
+    }
 
+    private void createDocumentInDiscovery(String docId, InputStream documentStream) {
         CreateDocumentRequest.Builder createDocumentBuilder = new CreateDocumentRequest.Builder(environmentId,
                 collectionId).documentId(docId).configurationId(configurationId);
         createDocumentBuilder.file(documentStream, HttpMediaType.APPLICATION_JSON);
         CreateDocumentResponse createDocumentResponse = discoveryClient.createDocument(createDocumentBuilder.build())
                 .execute();
         String documentId = createDocumentResponse.getDocumentId();
-        LOG.debug("Created a document ID: " + documentId);
+        LOG.info("Creating a document ID: " + documentId);
 
-        // wait for document to be ready
-        Log.debug("Waiting for document to be ready...");
+        LOG.info("Waiting for document to be created...");
+        waitForDocumentToBeReady(docId);
+    }
+
+    private void waitForDocumentToBeReady(String docId) {
         boolean documentReady = false;
         while (!documentReady) {
             GetDocumentRequest getDocumentRequest = new GetDocumentRequest.Builder(environmentId, collectionId,
-                    documentId).build();
+                    docId).build();
             GetDocumentResponse getDocumentResponse = discoveryClient.getDocument(getDocumentRequest).execute();
             documentReady = !getDocumentResponse.getStatus().equals(Document.Status.PROCESSING);
             try {
@@ -103,7 +107,20 @@ public class DiscoveryIndexWriter implements IndexWriter {
                 throw new RuntimeException("Interrupted");
             }
         }
-        LOG.debug("Document Ready!");
+        LOG.info("Document Ready!");
+    }
+
+    private String extractId(NutchDocument doc) {
+        String docUrl = (String) doc.getFieldValue("id");
+        String docId = null;
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(docUrl.getBytes(StandardCharsets.UTF_8));
+            docId = String.format("%064x", new java.math.BigInteger(1, hash));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return docId;
     }
 
     @Override
