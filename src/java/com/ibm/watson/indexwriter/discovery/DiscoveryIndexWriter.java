@@ -11,8 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.nutch.indexer.IndexWriter;
 import org.apache.nutch.indexer.NutchDocument;
-import org.apache.nutch.indexwriter.discovery.DiscoveryConstants;
-import org.mortbay.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,18 +29,16 @@ import com.ibm.watson.developer_cloud.http.HttpMediaType;
 public class DiscoveryIndexWriter implements IndexWriter {
     private static final int DEFAULT_SLEEP_MILLIS = 500;
     public static Logger LOG = LoggerFactory.getLogger(DiscoveryIndexWriter.class);
-    private String defaultIndex;
 
     private Configuration config;
     private Discovery discoveryClient;
     private String endpoint = null;
-    private Integer port = null;
-    private String clusterName = null;
     private String apiVersion = null;
     private String username = null;
     private String password = null;
     private String collectionId = null;
     private String environmentId = null;
+    private String configurationId = null;
 
     @Override
     public void open(Configuration job) throws IOException {
@@ -51,6 +47,7 @@ public class DiscoveryIndexWriter implements IndexWriter {
         password = job.get(DiscoveryConstants.PASSWORD);
         collectionId = job.get(DiscoveryConstants.COLLECTION_ID);
         environmentId = job.get(DiscoveryConstants.ENVIRONMENT_ID);
+        configurationId = job.get(DiscoveryConstants.CONFIGURATION_ID);
         apiVersion = job.get(DiscoveryConstants.API_VERSION);
         discoveryClient = new Discovery(apiVersion);
         discoveryClient.setEndPoint(endpoint);
@@ -59,7 +56,19 @@ public class DiscoveryIndexWriter implements IndexWriter {
 
     @Override
     public void write(NutchDocument doc) throws IOException {
-        // Add each field of this doc to the index source
+        indexNutchDocumentToDiscovery(doc);
+
+    }
+
+    @Override
+    public void update(NutchDocument doc) throws IOException {
+        indexNutchDocumentToDiscovery(doc);
+    }
+
+    private void indexNutchDocumentToDiscovery(NutchDocument doc) {
+        String docId = (String) doc.getFieldValue("id");
+        Log.debug("Nutch Document id: " + docId);
+
         Map<String, Object> documentValuesMap = new HashMap<String, Object>();
         for (String fieldName : doc.getFieldNames()) {
             if (doc.getFieldValue(fieldName) != null) {
@@ -69,14 +78,10 @@ public class DiscoveryIndexWriter implements IndexWriter {
         Gson gson = new Gson();
         String documentJson = gson.toJson(documentValuesMap);
         InputStream documentStream = new ByteArrayInputStream(documentJson.getBytes());
-        indexDocumentToDiscovery(documentStream);
 
-    }
-
-    private void indexDocumentToDiscovery(InputStream documentStream) {
         CreateDocumentRequest.Builder createDocumentBuilder = new CreateDocumentRequest.Builder(environmentId,
-                collectionId);
-        createDocumentBuilder.inputStream(documentStream, HttpMediaType.APPLICATION_JSON);
+                collectionId).documentId(docId).configurationId(configurationId);
+        createDocumentBuilder.file(documentStream, HttpMediaType.APPLICATION_JSON);
         CreateDocumentResponse createDocumentResponse = discoveryClient.createDocument(createDocumentBuilder.build())
                 .execute();
         String documentId = createDocumentResponse.getDocumentId();
@@ -107,18 +112,12 @@ public class DiscoveryIndexWriter implements IndexWriter {
     }
 
     @Override
-    public void update(NutchDocument doc) throws IOException {
-        // do nothing
-    }
-
-    @Override
     public void commit() throws IOException {
         // do nothing
     }
 
     @Override
     public void close() throws IOException {
-        commit();
 
     }
 
