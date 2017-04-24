@@ -1,0 +1,90 @@
+
+import java.nio.file.StandardCopyOption
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+
+plugins {
+    id 'de.undercouch.download' version '3.2.0'
+}
+
+ext {
+  nutchVersion = "2.3"
+  hbaseVersion = "0.94.27"
+  nutchUrl = "https://github.com/apache/nutch/archive/release-${nutchVersion}.tar.gz"
+  hbaseUrl = "https://archive.apache.org/dist/hbase/hbase-${hbaseVersion}/hbase-${hbaseVersion}.tar.gz"
+  hbaseTarFile = "hbase-${hbaseVersion}.tar.gz"
+  nutchTarFile = "nutch-release-${nutchVersion}.tar.gz"
+  nutchDir = "$buildDir/nutch-release-$nutchVersion"
+  hbaseDir = "$buildDir/hbase-$hbaseVersion"
+  externalProductName = "Apache Nutch Indexer plugin for Watson Discovery"
+}
+
+import de.undercouch.gradle.tasks.download.Download
+task downloadNutch(type: Download) {
+  src nutchUrl
+  dest new File("$buildDir/$nutchTarFile")
+}
+task downloadHbase(type: Download) {
+  src hbaseUrl
+  dest new File("$buildDir/$hbaseTarFile") 
+}
+task extractNutch(dependsOn: downloadNutch, type: Copy) {
+  from tarTree("$buildDir/$nutchTarFile")
+  into buildDir
+}
+task extractHbase(dependsOn: downloadHbase, type: Copy) {
+  from tarTree("$buildDir/$hbaseTarFile")
+  into buildDir
+}
+task runHbase(type: Exec) {
+  commandLine "$hbaseDir/bin/start-hbase.sh"
+}
+
+task setuphbase(dependsOn: extractHbase) {
+  doLast {
+    copyFile("conf/hbase/hbase-site.xml", "$hbaseDir/conf/hbase-site.xml")
+    runHbase.execute()
+  }
+}
+def copyFile(source, destination) { 
+  Path src = Paths.get(source)
+  Path dest = Paths.get(destination)
+  Files.copy(src, dest, StandardCopyOption.REPLACE_EXISTING)
+}
+
+task setupNutch(dependsOn: extractNutch){
+  doLast{
+    copy {
+      from 'plugin/indexer-discovery'
+      into "$nutchDir/src/plugin/indexer-discovery"
+    }
+    copyFile("conf/hbase/ivy.xml", "$nutchDir/ivy/ivy.xml")
+    copyFile("conf/hbase/gora.properties", "$nutchDir/conf/gora.properties")
+    copyFile("conf/nutch-discovery/plugin/build.xml", "$nutchDir/src/plugin/build.xml")
+  }
+}
+
+def nutchFile = new File("$nutchDir/build.xml")
+if(nutchFile.exists()){
+  ant.importBuild("$nutchDir/build.xml")
+}
+
+//this runtime task is nutch ant runtime target created after extracting Nutch
+if(project.tasks.findByName('runtime')){
+  task buildPlugin(dependsOn: runtime) {
+    doLast{
+      copyFile("conf/nutch-discovery/nutch-site.xml", "$nutchDir/runtime/local/conf/nutch-site.xml")
+      copyFile("conf/hbase/hbase-site.xml", "$nutchDir/runtime/local/conf/hbase-site.xml")
+    }
+  }
+}
+
