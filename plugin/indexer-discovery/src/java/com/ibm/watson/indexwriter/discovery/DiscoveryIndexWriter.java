@@ -56,9 +56,9 @@ public class DiscoveryIndexWriter implements IndexWriter {
         String docId = DiscoNutchUtils.extractId(doc);
         InputStream documentStream = DiscoNutchUtils.convertNutchDocToJsonStream(doc);
         boolean documentSent = createDocumentInDiscovery(docId, documentStream);
-        if(!documentSent){
-          LOG.info("Document id" + docId + "not created Successfully");
-          return;
+        if (!documentSent) {
+            LOG.info("Document id" + docId + "not created Successfully");
+            return;
         }
         LOG.info("Document id" + docId + "created successfully");
     }
@@ -84,8 +84,8 @@ public class DiscoveryIndexWriter implements IndexWriter {
     private boolean waitForDocumentToBeReady(String docId) {
         boolean documentReady = false;
         int attempts = 0;
-        //Wait for up to 50 seconds per document
-        while (!documentReady && attempts<=MAX_ATTEMPTS) {
+        // Wait for up to 50 seconds per document
+        while (!documentReady && attempts <= MAX_ATTEMPTS) {
             GetDocumentRequest getDocumentRequest = new GetDocumentRequest.Builder(environmentId, collectionId,
                     docId).build();
             GetDocumentResponse getDocumentResponse = discoveryClient.getDocument(getDocumentRequest).execute();
