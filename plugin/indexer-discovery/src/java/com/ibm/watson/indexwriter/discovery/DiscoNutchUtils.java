@@ -29,8 +29,17 @@ public class DiscoNutchUtils {
 
     public static InputStream convertNutchDocToJsonStream(NutchDocument doc) {
         checkNutchDocumentFornull(doc);
+        String contentField = "content";
+        String textField = "text";
+
         Map<String, Object> documentValuesMap = new HashMap<String, Object>();
         for (String fieldName : doc.getFieldNames()) {
+            if (fieldName.equals(contentField)) {
+                // NutchDocument content field is replaced with text field.
+                // This is done intentionally for Discovery to enrich documents by default.
+                documentValuesMap.put(textField, doc.getFieldValue(fieldName));
+                continue;
+            }
             if (doc.getFieldValue(fieldName) != null) {
                 documentValuesMap.put(fieldName, doc.getFieldValue(fieldName));
             }
