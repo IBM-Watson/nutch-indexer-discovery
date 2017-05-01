@@ -17,7 +17,8 @@ import org.junit.rules.ExpectedException;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
-public class DiscoNutchUtilsTest {
+public class DiscoNutchDocTest {
+    private static final String ID = "id";
     private static final String URL = "www.example.com";
 
     @Rule
@@ -25,31 +26,31 @@ public class DiscoNutchUtilsTest {
 
     @Test
     public void canExtractIdOutOfNutchDocument() throws NoSuchAlgorithmException {
-        NutchDocument doc = new NutchDocument();
-        doc.add("id", URL);
-        String expectedId = DiscoNutchUtils.hashUrl(URL);
-        String actualId = DiscoNutchUtils.extractId(doc);
+        NutchDocument doc = createNutchDocument();
+        DiscoNutchDoc discoNutchDoc = new DiscoNutchDoc.Builder(doc).build();
+        String expectedId = discoNutchDoc.hashUrl(URL);
+        String actualId = discoNutchDoc.extractId();
         assertEquals(actualId, expectedId);
     }
 
     @Test
     public void extractsSameIdOutForNutchDocumentsWithSameFieldId() {
-        NutchDocument doc1 = new NutchDocument();
-        doc1.add("id", URL);
+        NutchDocument doc1 = createNutchDocument();
+        DiscoNutchDoc discoNutchDoc1 = new DiscoNutchDoc.Builder(doc1).build();
 
-        NutchDocument doc2 = new NutchDocument();
-        doc2.add("id", URL);
+        NutchDocument doc2 = createNutchDocument();
+        DiscoNutchDoc discoNutchDoc2 = new DiscoNutchDoc.Builder(doc2).build();
 
-        String doc1Id = DiscoNutchUtils.extractId(doc1);
-        String doc2Id = DiscoNutchUtils.extractId(doc2);
+        String doc1Id = discoNutchDoc1.extractId();
+        String doc2Id = discoNutchDoc2.extractId();
         assertEquals(doc1Id, doc2Id);
     }
 
     @Test
-    public void extractIdthrowsNullExceptionWhenNutchDocumentIsNull() {
+    public void throwsNullExceptionWhenNutchDocumentIsNull() {
         NutchDocument doc = null;
-        exception.expect(NullPointerException.class);
-        DiscoNutchUtils.extractId(doc);
+        exception.expect(IllegalArgumentException.class);
+        new DiscoNutchDoc.Builder(doc);
     }
 
     @Test
@@ -59,22 +60,15 @@ public class DiscoNutchUtilsTest {
         Map<String, String> docValuesMap = ImmutableMap.of("id", URL, textField, content);
         String expectedJsonString = new Gson().toJson(docValuesMap);
 
-        NutchDocument doc = new NutchDocument();
-        doc.add("id", URL);
+        NutchDocument doc = createNutchDocument();
         // NutchDocument content field is replaced with text field.
         // This is done intentionally for Discovery to enrich documents by default.
         doc.add("content", content);
+        DiscoNutchDoc discoNutchDoc = new DiscoNutchDoc.Builder(doc).build();
 
-        InputStream actualInputStream = DiscoNutchUtils.convertNutchDocToJsonStream(doc);
+        InputStream actualInputStream = discoNutchDoc.convertNutchDocToJsonStream();
         String actualJsonString = convertJsonStreamToString(actualInputStream);
         assertEquals(actualJsonString, expectedJsonString);
-    }
-
-    @Test
-    public void convertNutchDocToJsonThrowsExceptionWhenDocIsNUll() {
-        NutchDocument doc = new NutchDocument();
-        exception.expect(NullPointerException.class);
-        DiscoNutchUtils.convertNutchDocToJsonStream(doc);
     }
 
     private String convertJsonStreamToString(InputStream jsonStream) throws IOException {
@@ -86,5 +80,11 @@ public class DiscoNutchUtilsTest {
         }
         return responseStrBuilder.toString();
 
+    }
+
+    private NutchDocument createNutchDocument() {
+        NutchDocument doc = new NutchDocument();
+        doc.add(ID, URL);
+        return doc;
     }
 }
