@@ -29,7 +29,7 @@ public class DiscoNutchDocTest {
         NutchDocument doc = createNutchDocument();
         DiscoNutchDoc discoNutchDoc = new DiscoNutchDoc.Builder(doc).build();
         String expectedId = discoNutchDoc.hashUrl(URL);
-        String actualId = discoNutchDoc.extractId();
+        String actualId = discoNutchDoc.getId();
         assertEquals(actualId, expectedId);
     }
 
@@ -41,8 +41,8 @@ public class DiscoNutchDocTest {
         NutchDocument doc2 = createNutchDocument();
         DiscoNutchDoc discoNutchDoc2 = new DiscoNutchDoc.Builder(doc2).build();
 
-        String doc1Id = discoNutchDoc1.extractId();
-        String doc2Id = discoNutchDoc2.extractId();
+        String doc1Id = discoNutchDoc1.getId();
+        String doc2Id = discoNutchDoc2.getId();
         assertEquals(doc1Id, doc2Id);
     }
 

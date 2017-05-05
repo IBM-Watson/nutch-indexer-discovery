@@ -22,8 +22,8 @@ public class DiscoNutchDoc {
     private InputStream documentStream;
     private NutchDocument doc;
 
-    private DiscoNutchDoc(Builder builder) {
-        this.doc = builder.doc;
+    private DiscoNutchDoc(NutchDocument doc) {
+        this.doc = doc;
     }
 
     public static class Builder {
@@ -35,11 +35,11 @@ public class DiscoNutchDoc {
         }
 
         public DiscoNutchDoc build() {
-            return new DiscoNutchDoc(this);
+            return new DiscoNutchDoc(this.doc);
         }
     }
 
-    public String extractId() {
+    public String getId() {
         if (this.docId != null) {
             return docId;
         }
@@ -58,7 +58,8 @@ public class DiscoNutchDoc {
         }
         Map<String, Object> documentValuesMap = mapFieldNameToValue(doc);
         String documentJson = new Gson().toJson(documentValuesMap);
-        return new ByteArrayInputStream(documentJson.getBytes());
+        documentStream = new ByteArrayInputStream(documentJson.getBytes());
+        return documentStream;
     }
 
     protected static String hashUrl(String url) throws NoSuchAlgorithmException {

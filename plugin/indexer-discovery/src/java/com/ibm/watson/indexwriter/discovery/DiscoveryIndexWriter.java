@@ -54,7 +54,7 @@ public class DiscoveryIndexWriter implements IndexWriter {
     @Override
     public void write(NutchDocument doc) throws IOException {
         DiscoNutchDoc discoNutchDoc = new DiscoNutchDoc.Builder(doc).build();
-        String docId = discoNutchDoc.extractId();
+        String docId = discoNutchDoc.getId();
         InputStream documentStream = discoNutchDoc.convertNutchDocToJsonStream();
         boolean documentSent = createDocumentInDiscovery(docId, documentStream);
         if (!documentSent) {
