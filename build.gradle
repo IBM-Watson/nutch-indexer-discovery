@@ -17,13 +17,13 @@ plugins {
 }
 
 ext {
-  nutchVersion = "2.3"
-  hbaseVersion = "0.94.27"
-  nutchUrl = "https://github.com/apache/nutch/archive/release-${nutchVersion}.tar.gz"
-  hbaseUrl = "https://archive.apache.org/dist/hbase/hbase-${hbaseVersion}/hbase-${hbaseVersion}.tar.gz"
+  nutchVersion = "2.3.1"
+  hbaseVersion = "1.2.5"
+  nutchUrl = "http://apache.claz.org/nutch/${nutchVersion}/apache-nutch-${nutchVersion}-src.tar.gz"
+  hbaseUrl = "http://archive.apache.org/dist/hbase/${hbaseVersion}/hbase-${hbaseVersion}-bin.tar.gz"
   hbaseTarFile = "hbase-${hbaseVersion}.tar.gz"
-  nutchTarFile = "nutch-release-${nutchVersion}.tar.gz"
-  nutchDir = "$buildDir/nutch-release-$nutchVersion"
+  nutchTarFile = "apache-nutch-${nutchVersion}.tar.gz"
+  nutchDir = "$buildDir/apache-nutch-$nutchVersion"
   hbaseDir = "$buildDir/hbase-$hbaseVersion"
   externalProductName = "Apache Nutch Indexer plugin for Watson Discovery"
 }
@@ -35,7 +35,7 @@ task downloadNutch(type: Download) {
 }
 task downloadHbase(type: Download) {
   src hbaseUrl
-  dest new File("$buildDir/$hbaseTarFile") 
+  dest new File("$buildDir/$hbaseTarFile")
 }
 task extractNutch(dependsOn: downloadNutch, type: Copy) {
   from tarTree("$buildDir/$nutchTarFile")
@@ -46,16 +46,16 @@ task extractHbase(dependsOn: downloadHbase, type: Copy) {
   into buildDir
 }
 task runHbase(type: Exec) {
-  commandLine "$hbaseDir/bin/start-hbase.sh"
+  commandLine "sh $hbaseDir/bin/start-hbase.sh"
 }
 
 task setuphbase(dependsOn: extractHbase) {
   doLast {
-    copyFile("conf/hbase/hbase-site.xml", "$hbaseDir/conf/hbase-site.xml")
+    copyFile("$projectDir/conf/hbase/hbase-site.xml", "$hbaseDir/conf/hbase-site.xml")
     runHbase.execute()
   }
 }
-def copyFile(source, destination) { 
+def copyFile(source, destination) {
   Path src = Paths.get(source)
   Path dest = Paths.get(destination)
   Files.copy(src, dest, StandardCopyOption.REPLACE_EXISTING)
@@ -64,12 +64,12 @@ def copyFile(source, destination) {
 task setupNutch(dependsOn: extractNutch){
   doLast{
     copy {
-      from 'plugin/indexer-discovery'
+      from "$projectDir/plugin/indexer-discovery"
       into "$nutchDir/src/plugin/indexer-discovery"
     }
-    copyFile("conf/hbase/ivy.xml", "$nutchDir/ivy/ivy.xml")
-    copyFile("conf/hbase/gora.properties", "$nutchDir/conf/gora.properties")
-    copyFile("conf/nutch-discovery/plugin/build.xml", "$nutchDir/src/plugin/build.xml")
+    copyFile("$projectDir/conf/hbase/ivy.xml", "$nutchDir/ivy/ivy.xml")
+    copyFile("$projectDir/conf/hbase/gora.properties", "$nutchDir/conf/gora.properties")
+    copyFile("$projectDir/conf/nutch-discovery/plugin/build.xml", "$nutchDir/src/plugin/build.xml")
   }
 }
 
@@ -82,8 +82,8 @@ if(nutchFile.exists()){
 if(project.tasks.findByName('runtime')){
   task buildPlugin(dependsOn: runtime) {
     doLast{
-      copyFile("conf/nutch-discovery/nutch-site.xml", "$nutchDir/runtime/local/conf/nutch-site.xml")
-      copyFile("conf/hbase/hbase-site.xml", "$nutchDir/runtime/local/conf/hbase-site.xml")
+      copyFile("$projectDir/conf/nutch-discovery/nutch-site.xml", "$nutchDir/runtime/local/conf/nutch-site.xml")
+      copyFile("$projectDir/conf/hbase/hbase-site.xml", "$nutchDir/runtime/local/conf/hbase-site.xml")
     }
   }
 }
