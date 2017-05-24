@@ -18,13 +18,13 @@ plugins {
 
 ext {
   nutchVersion = "2.3.1"
-  hbaseVersion = "1.2.5"
+  hbaseVersion = "0.98.8"
   nutchUrl = "http://apache.claz.org/nutch/${nutchVersion}/apache-nutch-${nutchVersion}-src.tar.gz"
-  hbaseUrl = "http://archive.apache.org/dist/hbase/${hbaseVersion}/hbase-${hbaseVersion}-bin.tar.gz"
+  hbaseUrl = "https://archive.apache.org/dist/hbase/hbase-${hbaseVersion}/hbase-${hbaseVersion}-hadoop2-bin.tar.gz"
   hbaseTarFile = "hbase-${hbaseVersion}.tar.gz"
   nutchTarFile = "apache-nutch-${nutchVersion}.tar.gz"
   nutchDir = "$buildDir/apache-nutch-$nutchVersion"
-  hbaseDir = "$buildDir/hbase-$hbaseVersion"
+  hbaseDir = "$buildDir/hbase-$hbaseVersion-hadoop2"
   externalProductName = "Apache Nutch Indexer plugin for Watson Discovery"
 }
 

@@ -1,14 +1,14 @@
 <?xml version="1.0" ?>
 
-<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor
-  license agreements. See the NOTICE file distributed with this work for additional
-  information regarding copyright ownership. The ASF licenses this file to
-  You under the Apache License, Version 2.0 (the "License"); you may not use
-  this file except in compliance with the License. You may obtain a copy of
-  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required
-  by applicable law or agreed to in writing, software distributed under the
-  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
-  OF ANY KIND, either express or implied. See the License for the specific
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+  license agreements. See the NOTICE file distributed with this work for additional 
+  information regarding copyright ownership. The ASF licenses this file to 
+  You under the Apache License, Version 2.0 (the "License"); you may not use 
+  this file except in compliance with the License. You may obtain a copy of 
+  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+  by applicable law or agreed to in writing, software distributed under the 
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+  OF ANY KIND, either express or implied. See the License for the specific 
   language governing permissions and limitations under the License. -->
 
 <ivy-module version="1.0">
@@ -17,7 +17,7 @@
       url="http://www.apache.org/licenses/LICENSE-2.0.txt/" />
     <ivyauthor name="Apache Nutch Team" url="http://nutch.apache.org" />
     <description homepage="http://nutch.apache.org">Nutch is an open source web-search
-      software. It builds on Hadoop, Tika and Solr, adding web-specifics, such as a crawler,
+      software. It builds on Hadoop, Tika and Solr, adding web-specifics, such as a crawler, 
       a link-graph database etc.
     </description>
   </info>
@@ -75,7 +75,7 @@
 
     <dependency org="com.google.guava" name="guava" rev="11.0.2" />
     <dependency org="com.google.code.crawler-commons" name="crawler-commons" rev="0.5" />
-
+    
     <dependency org="org.restlet.jse" name="org.restlet" rev="2.2.3" conf="*->default" />
     <dependency org="org.restlet.jse" name="org.restlet.ext.jackson" rev="2.2.3" conf="*->default" />
     <dependency org="org.restlet.jse" name="org.restlet.ext.jaxrs" rev="2.2.3" conf="*->default" />
@@ -91,46 +91,47 @@
     <dependency org="org.jdom" name="jdom" rev="1.1" conf="test->default"/>
     <dependency org="org.mockito" name="mockito-all" rev="1.9.5" conf="test->default"/>
     <dependency org="org.springframework" name="spring-test" rev="4.0.4.RELEASE" conf="test->default"/>
-
+	
 
     <!--================-->
     <!-- Gora artifacts -->
     <!--================-->
-    <!-- N.B. To use Gora SNAPSHOT's merely replace the 'ref' value with the SNAPSHOT version
+    <!-- N.B. To use Gora SNAPSHOT's merely replace the 'ref' value with the SNAPSHOT version 
     and add changing="true" alongside the dependency declaration. An example has been
     provided for the gora-core dependency as below -->
     <dependency org="org.apache.gora" name="gora-core" rev="0.6.1" conf="*->default"/>
-
-    <!-- Uncomment this to use SQL as Gora backend. It should be noted that the
-    gora-sql 0.1.1-incubating artifact is NOT compatable with gora-core 0.3. Users should
+    
+    <!-- Uncomment this to use SQL as Gora backend. It should be noted that the 
+    gora-sql 0.1.1-incubating artifact is NOT compatable with gora-core 0.3. Users should 
     downgrade to gora-core 0.2.1 in order to use SQL as a backend however this is not suggested. -->
     <!--
     <dependency org="org.apache.gora" name="gora-sql" rev="0.1.1-incubating" conf="*->default" />
     -->
     <!-- Uncomment this to use MySQL as database with SQL as Gora store. -->
     <!--
-    <dependency org="mysql" name="mysql-connector-java" rev="5.1.18" conf="*->default"/>
+    <dependency org="mysql" name="mysql-connector-java" rev="5.1.18" conf="*->default"/> 
     -->
     <!-- Uncomment this to use HBase as Gora backend. -->
-    <dependency org="org.apache.gora" name="gora-hbase" rev="0.6.1" conf="*->default" />
+    <dependency org="org.apache.gora" name="gora-hbase" rev="0.6.1" conf="*->default" /> 
+    <dependency org="org.apache.hbase" name="hbase-common" rev="0.98.8-hadoop2" conf="*->default" />
     <!-- Uncomment this to use Accumulo as Gora backend. -->
     <!--
     <dependency org="org.apache.gora" name="gora-accumulo" rev="0.6.1" conf="*->default" />
     -->
     <!-- Uncomment this to use Cassandra as Gora backend. -->
-    <!--
+    <!-- 
     <dependency org="org.apache.gora" name="gora-cassandra" rev="0.6.1" conf="*->default" />
     -->
     <!-- Uncomment this to use MongoDB as Gora backend. -->
     <!--
     <dependency org="org.apache.gora" name="gora-mongodb" rev="0.6.1" conf="*->default" />
-    -->
+    -->    
     <!-- Uncomment this to use Solr as Gora backend. -->
     <!--
     <dependency org="org.apache.gora" name="gora-solr" rev="0.6.1" conf="*->default" />
     -->
     <!-- The gora-compiler is used within the 'ant generate-gora-src' target to compile
-    the Gora .avsc files within ./src/gora
+    the Gora .avsc files within ./src/gora 
     -->
     <dependency org="org.apache.gora" name="gora-compiler-cli" rev="0.6.1" conf="*->default"/>
     <dependency org="org.apache.gora" name="gora-compiler" rev="0.6.1" conf="*->default"/>
@@ -143,11 +144,11 @@
     <dependency org="org.springframework" name="spring-web" rev="4.0.4.RELEASE" conf="*->default" />
 
     <dependency org="com.sun.jersey" name="jersey-client" rev="1.8" conf="*->default" />
-
+	
     <dependency org="com.j256.ormlite" name="ormlite-jdbc" rev="4.48" conf="*->default" />
     <dependency org="com.h2database" name="h2" rev="1.4.180" conf="*->default" />
     <dependency org="org.eclipse.persistence" name="javax.persistence" rev="2.0.0" conf="*->default" />
-
+	
     <dependency org="org.apache.wicket" name="wicket-core" rev="6.16.0" conf="*->default" />
     <dependency org="org.apache.wicket" name="wicket-spring" rev="6.16.0" conf="*->default" />
     <dependency org="de.agilecoders.wicket" name="wicket-bootstrap-core" rev="0.9.2" conf="*->default" />
@@ -166,3 +167,4 @@
   </dependencies>
 
 </ivy-module>
+
