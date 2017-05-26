@@ -45,14 +45,10 @@ task extractHbase(dependsOn: downloadHbase, type: Copy) {
   from tarTree("$buildDir/$hbaseTarFile")
   into buildDir
 }
-task runHbase(type: Exec) {
-  commandLine "sh $hbaseDir/bin/start-hbase.sh"
-}
 
 task setuphbase(dependsOn: extractHbase) {
   doLast {
     copyFile("$projectDir/conf/hbase/hbase-site.xml", "$hbaseDir/conf/hbase-site.xml")
-    runHbase.execute()
   }
 }
 def copyFile(source, destination) {
