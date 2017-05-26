@@ -27,6 +27,10 @@
     <value>file:///PATH_TO_HBASE_DATA_DIR</value>
   </property>
   <property>
+    <name>hbase.zookeeper.property.dataDir</name>
+    <value>/PATH_TO_ZOOKEEPER_DIR/</value>
+  </property>
+  <property>
     <name>hbase.cluster.distributed</name>
     <value>false</value>
   </property>
