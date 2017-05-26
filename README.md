@@ -13,7 +13,7 @@ Set up Gradle wrapper
 
 Setting up HBase
 ----------------
-Edit `conf/hbase/hbase-site.xml` file to point to the right folder where hbase data will be saved.
+Edit `conf/hbase/hbase-site.xml` file to point to the right folder where hbase/zookeeper data will be saved.
 
 You can then use the built-in gradle task to setup Hbase.
 
