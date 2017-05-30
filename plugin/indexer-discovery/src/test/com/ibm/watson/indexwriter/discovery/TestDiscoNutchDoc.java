@@ -17,7 +17,7 @@ import org.junit.rules.ExpectedException;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
-public class DiscoNutchDocTest {
+public class TestDiscoNutchDoc {
     private static final String ID = "id";
     private static final String URL = "www.example.com";
 

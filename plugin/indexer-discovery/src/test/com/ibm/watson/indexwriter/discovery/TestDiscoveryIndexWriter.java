@@ -14,7 +14,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-public class DiscoveryIndexWriterTest {
+public class TestDiscoveryIndexWriter {
     private DiscoveryIndexWriter discoWriter;
     private Configuration conf;
     private NutchDocument doc;
