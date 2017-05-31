@@ -82,6 +82,7 @@
      <ant dir="parse-metatags" target="test"/>
      <ant dir="index-anchor" target="test"/>
      <ant dir="index-basic" target="test"/>
+     <ant dir="indexer-discovery" target="test"/>
      <ant dir="index-more" target="test"/>
      <ant dir="language-identifier" target="test"/>
      <ant dir="protocol-httpclient" target="test"/>
