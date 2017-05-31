@@ -1,0 +1,31 @@
+# BEGIN_COPYRIGHT
+#
+# Licensed Materials - Property of IBM
+#
+# 5727-I17
+# (C) Copyright IBM Corp. 2011, 2016 All Rights Reserved.
+#
+# US Government Users Restricted Rights - Use, duplication or
+# disclosure restricted by GSA ADP Schedule Contract with
+# IBM Corp.
+#
+# END_COPYRIGHT
+
+group: bluezone
+sudo: false
+language: java
+before_install:
+ - sudo apt-get remove ant
+ - wget https://archive.apache.org/dist/ant/binaries/binaries/apache-ant-1.9.4-bin.tar.gz
+ - tar -xvf apache-ant-1.9.4-bin.tar.gz
+ - wget http://mirror.reverse.net/pub/apache//ant/ivy/2.4.0/apache-ivy-2.4.0-bin.tar.gz
+ - tar -xvf apache-ivy-2.4.0-bin.tar.gz
+ - cp -r apache-ivy-2.4.0/ivy-2.4.0.jar apache-ant-1.9.4/lib/
+ - export ANT_HOME=$TRAVIS_BUILD_DIR/apache-ant-1.9.4
+ - export PATH=$PATH:$ANT_HOME/bin
+install: true
+script:
+ - ./gradlew
+ - ./gradlew setupNutch
+ - ./gradlew buildPlugin
+ - cd build/apache-nutch-2.3.1/src/plugin && ant test
