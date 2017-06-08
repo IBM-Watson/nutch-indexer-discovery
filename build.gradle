@@ -66,6 +66,10 @@ task setupNutch(dependsOn: extractNutch){
     copyFile("$projectDir/conf/hbase/ivy.xml", "$nutchDir/ivy/ivy.xml")
     copyFile("$projectDir/conf/hbase/gora.properties", "$nutchDir/conf/gora.properties")
     copyFile("$projectDir/conf/nutch-discovery/plugin/build.xml", "$nutchDir/src/plugin/build.xml")
+    copy {
+      from "$projectDir/windows_libraries/"
+      into "$nutchDir/lib/native/"
+    }
   }
 }
 
