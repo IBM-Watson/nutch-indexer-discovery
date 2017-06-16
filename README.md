@@ -91,6 +91,7 @@ To build the plugin, run
 ./gradlew buildPlugin
 ```
 
+This will take about 4-5 minutes to complete.
 That's it. Everything is now setup to crawl websites.
 
 Adding new Domains to crawl with Nutch
@@ -100,7 +101,7 @@ Adding new Domains to crawl with Nutch
 
   ```bash
   $ mkdir seed
-  $ echo "https://en.wikipedia.org/wiki/Apache_Nutch" >> seed/urls.txt
+  $ echo "https://en.wikipedia.org/wiki/Apache_Nutch" >> $projectDir/seed/urls.txt
   ```
 
 2. inject them into Nutch by giving a file URL (!)
@@ -115,10 +116,10 @@ Actual Crawling Procedure
 1. Generate a new set of URLs to fetch. This is is based on both the injected URLs as well as outdated URLs in the Nutch crawl db.
 
   ```bash
-  $projectDir/build/apache-nutch-2.3.1/runtime/local/bin/nutch generate -topN 10
+  $projectDir/build/apache-nutch-2.3.1/runtime/local/bin/nutch generate -topN 5
   ```
 
-  The above command will create job batches for 10 URLs. You can also increase/decrease this number.
+  The above command will create job batches for 5 URLs. You can also increase/decrease this number.
 
 2. Fetch the URLs. We are not clustering, so we can simply fetch all batches:
 
