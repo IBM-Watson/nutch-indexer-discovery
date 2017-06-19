@@ -26,7 +26,7 @@
   </property>
   <property>
     <name>discovery.endpoint</name>
-    <value></value>
+    <value>https://gateway.watsonplatform.net/discovery/api</value>
   </property>
   <property>
     <name>discovery.username</name>
@@ -46,7 +46,7 @@
   </property>
   <property>
     <name>discovery.api.version</name>
-    <value></value>
+    <value>2016-12-01</value>
   </property>
   <property>
     <name>discovery.collection.id</name>
