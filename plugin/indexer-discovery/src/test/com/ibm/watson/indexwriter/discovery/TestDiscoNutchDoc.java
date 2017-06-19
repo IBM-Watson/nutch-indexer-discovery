@@ -54,17 +54,18 @@ public class TestDiscoNutchDoc {
     }
 
     @Test
-    public void convertsNutchDocumentToJsonStream() throws IOException {
+    public void convertsNutchDocumentToJsonStream() throws IOException, NoSuchAlgorithmException {
         String content = "Hello";
         String textField = "text";
-        Map<String, String> docValuesMap = ImmutableMap.of("id", URL, textField, content);
-        String expectedJsonString = new Gson().toJson(docValuesMap);
 
         NutchDocument doc = createNutchDocument();
         // NutchDocument content field is replaced with text field.
         // This is done intentionally for Discovery to enrich documents by default.
         doc.add("content", content);
         DiscoNutchDoc discoNutchDoc = new DiscoNutchDoc.Builder(doc).build();
+        String hashedId = discoNutchDoc.hashUrl(URL);
+        Map<String, String> docValuesMap = ImmutableMap.of("id", hashedId, textField, content);
+        String expectedJsonString = new Gson().toJson(docValuesMap);
 
         InputStream actualInputStream = discoNutchDoc.convertNutchDocToJsonStream();
         String actualJsonString = convertJsonStreamToString(actualInputStream);
