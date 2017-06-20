@@ -68,13 +68,17 @@ public class DiscoNutchDoc {
         return String.format(HEX, new java.math.BigInteger(1, hash));
     }
 
-    private static Map<String, Object> mapFieldNameToValue(NutchDocument doc) {
+    private Map<String, Object> mapFieldNameToValue(NutchDocument doc) {
         Map<String, Object> documentValuesMap = new HashMap<String, Object>();
         for (String fieldName : doc.getFieldNames()) {
             if (fieldName.equals(CONTENT_FIELD)) {
                 // NutchDocument content field is replaced with text field.
                 // This is done intentionally for Discovery to enrich documents by default.
                 documentValuesMap.put(TEXT_FIELD, doc.getFieldValue(fieldName));
+                continue;
+            }
+            if (fieldName.equals(ID)) {
+                documentValuesMap.put(ID, this.getId());
                 continue;
             }
             if (doc.getFieldValue(fieldName) != null) {
