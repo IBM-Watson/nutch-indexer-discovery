@@ -1,15 +1,3 @@
-# BEGIN_COPYRIGHT
-#
-# Licensed Materials - Property of IBM
-#
-# 5727-I17
-# (C) Copyright IBM Corp. 2011, 2017 All Rights Reserved.
-#
-# US Government Users Restricted Rights - Use, duplication or
-# disclosure restricted by GSA ADP Schedule Contract with
-# IBM Corp.
-#
-# END_COPYRIGHT
 
 group: bluezone
 sudo: false
