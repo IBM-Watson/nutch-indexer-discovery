@@ -2,10 +2,20 @@
 
 [![Build Status](https://travis.ibm.com/watson-crawler/nutch-indexer-discovery.svg?token=xxVzTKgArtoDziLUGyrh&branch=master)](https://travis.ibm.com/watson-crawler/nutch-indexer-discovery/)
 
-Requirements
+Pre-Requirements
 ------------
 
 * OpenJDK 8
+
+
+Requirements
+------------
+
+* HBase
+* Zookeeper
+* Gradle
+* Nutch
+* Ant
 
 Set up Gradle wrapper
 ----------------
@@ -36,8 +46,8 @@ You can then use the built-in gradle task to setup Hbase.
 
 This will download hbase-0.98.8-hadoop2 in build directory.
 
-Now, startup hbase service by going into the hbase directory - $projectDir/build/hbase-0.98.8-hadoop2/bin/
-and run -
+Now, startup hbase service by going into the hbase directory: _projectDir_/build/hbase-0.98.8-hadoop2/bin/
+and run:
 
 ```bash
 ./start-hbase.sh
@@ -46,13 +56,13 @@ and run -
 Setting up Nutch
 ----------------
 
-Download and extract apache-nutch-2.3.1 in the build directory -
+Download and extract apache-nutch-2.3.1 in the build directory:
 
 ```bash
 ./gradlew setupNutch
 ```
 
-Then edit `conf/nutch-discovery/nutch-site.xml` with discovery credentials,
+Then edit `conf/nutch-discovery/nutch-site.xml` with Discovery credentials. The values for the first three properties (endpoint, username, and password) are provided by the Discovery service. The others are provided by your specific instance of the Discovery service.
 
 ```xml
   <property>
@@ -85,19 +95,19 @@ Then edit `conf/nutch-discovery/nutch-site.xml` with discovery credentials,
   </property>
 ```
 
-To build the plugin, run
+To build the plugin, run:
 
 ```bash
 ./gradlew buildPlugin
 ```
 
-This will take about 4-5 minutes to complete.
+This will take about 4-5 minutes to complete. It may hang a bit; please be patient. 
 That's it. Everything is now setup to crawl websites.
 
 Adding new Domains to crawl with Nutch
 --------------------------------------
 
-1. Edit the textfile `seed/urls.txt` containing a list of seed URLs.
+1. Edit the text file `seed/urls.txt` containing a list of seed URLs.
 
   ```bash
   $ mkdir seed
@@ -113,7 +123,7 @@ Adding new Domains to crawl with Nutch
 Actual Crawling Procedure
 -------------------------
 
-1. Generate a new set of URLs to fetch. This is is based on both the injected URLs as well as outdated URLs in the Nutch crawl db.
+1. Generate a new set of URLs to fetch. This is based on both the injected URLs as well as outdated URLs in the Nutch crawl db.
 
   ```bash
   $projectDir/build/apache-nutch-2.3.1/runtime/local/bin/nutch generate -topN 5
@@ -139,7 +149,7 @@ Actual Crawling Procedure
   $projectDir/build/apache-nutch-2.3.1/runtime/local/bin/nutch updatedb -all
   ```
 
-On the first run, this will only crawl the injected URLs. The procedure above is supposed to be repeated regulargy to keep the index up to date.
+On the first run, this will only crawl the injected URLs. The procedure above is supposed to be repeated regularly to keep the index up to date.
 
 Putting Documents into Discovery
 ------------------------------------
