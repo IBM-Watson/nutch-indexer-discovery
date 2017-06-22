@@ -17,26 +17,16 @@ Set up Gradle wrapper
 
 Setting up HBase
 ----------------
-Edit `conf/hbase/hbase-site.xml`
-Please make sure you specify a valid hbase directory path and a valid zookeeper data directory path.
-```xml
-<property>
-    <name>hbase.rootdir</name>
-    <value>file:///home/USER_NAME/hbase-data</value>
-</property>
-<property>
-    <name>hbase.zookeeper.property.dataDir</name>
-    <value>/home/USER_NAME/zookeeper-data</value>
-</property>
-```
-This is where hbase data and zookeeper data will be stored.
-You can then use the built-in gradle task to setup Hbase.
+
+You can now use the built-in gradle task to setup Hbase.
 
 ```bash
 ./gradlew setupHbase
 ```
 
-This will download hbase-0.98.8-hadoop2 in build directory.
+* This will create directories within project directory to
+   store Hbase and Zookeeper data.
+* Downloads hbase-0.98.8-hadoop2 in build directory.
 
 Now, startup hbase service by going into the hbase directory: _projectDir_/build/hbase-0.98.8-hadoop2/bin/
 and run:
