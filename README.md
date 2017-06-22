@@ -2,20 +2,12 @@
 
 [![Build Status](https://travis.ibm.com/watson-crawler/nutch-indexer-discovery.svg?token=xxVzTKgArtoDziLUGyrh&branch=master)](https://travis.ibm.com/watson-crawler/nutch-indexer-discovery/)
 
-Pre-Requirements
-------------
-
-* OpenJDK 8
-
-
 Requirements
 ------------
 
-* HBase
-* Zookeeper
 * Gradle
-* Nutch
-* Ant
+(HBase, Zookeeper, Nutch, Ant, and OpenJDK 8 are also required, but will be installed for you with Gradle.)
+
 
 Set up Gradle wrapper
 ----------------
