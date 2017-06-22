@@ -5,8 +5,8 @@
 Requirements
 ------------
 
-* Gradle
-(HBase, Zookeeper, Nutch, Ant, and OpenJDK 8 are also required, but will be installed for you with Gradle.)
+* Java (OpenJDK 8/Oracle JDK)
+(HBase, Zookeeper, Nutch, Ant, and Gradle are also required, but will be installed for you when you set up the Gradle wrapper.)
 
 
 Set up Gradle wrapper
