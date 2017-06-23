@@ -4,6 +4,8 @@ import java.nio.file.Paths;
 import java.nio.file.Files
 import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING
+import groovy.xml.MarkupBuilder
+import groovy.xml.XmlUtil
 
 buildscript {
     repositories {
@@ -28,6 +30,28 @@ ext {
 }
 
 import de.undercouch.gradle.tasks.download.Download
+
+task configureHbase(){
+  def hbaseDataDir = "hbase-data"
+  def zkDataDir = "zk-data"
+  def hbaseDir = new File("$projectDir", hbaseDataDir)
+  def zkDir = new File("$projectDir", zkDataDir)
+  if(!hbaseDir.exists()){
+      hbaseDir.mkdirs()
+  }
+  if(!zkDir.exists()){
+    zkDir.mkdirs()
+  }
+  def hbaseSiteXml = "$projectDir/conf/hbase/hbase-site.xml"
+  def configuration = new XmlParser().parse(hbaseSiteXml)
+  configuration.property[0].value[0].value = "file://${projectDir}/$hbaseDataDir"
+  configuration.property[1].value[0].value = "$projectDir/$zkDataDir"
+  def writer = new FileWriter(hbaseSiteXml)
+  XmlUtil.serialize(configuration, writer)
+  println "Hbase root dir set to $projectDir/$hbaseDataDir"
+  println "Zookeeper root dir set to $projectDir/$zkDataDir"
+}
+
 task downloadNutch(type: Download) {
   src nutchUrl
   dest new File("$buildDir/$nutchTarFile")
