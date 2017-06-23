@@ -7,7 +7,11 @@ Requirements
 
 * Java (OpenJDK 8/Oracle JDK)
 (HBase, Zookeeper, Nutch, Ant, and Gradle are also required, but will be installed for you when you set up the Gradle wrapper.)
+* Make sure `JAVA_HOME` environment variable is set.
 
+  On *MAC*, JAVA_HOME will be something like - `/Library/Java/Home/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home`
+
+  On *LINUX*, JAVA_HOME will be something like - `/usr/lib/jvm/java-8-openjdk-amd64`
 
 Set up Gradle wrapper
 ----------------
