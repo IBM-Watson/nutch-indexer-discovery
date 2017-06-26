@@ -7,11 +7,12 @@ Requirements
 
 * Java (OpenJDK 8/Oracle JDK)
 (HBase, Zookeeper, Nutch, Ant, and Gradle are also required, but will be installed for you when you set up the Gradle wrapper.)
-* Make sure `JAVA_HOME` environment variable is set.
 
-  On *MAC*, JAVA_HOME will be something like - `/Library/Java/Home/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home`
+* Set the `JAVA_HOME` environment variable 
 
-  On *LINUX*, JAVA_HOME will be something like - `/usr/lib/jvm/java-8-openjdk-amd64`
+  On *MAC OS*, JAVA_HOME can be found at (or in a similar location): `/Library/Java/Home/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home`
+
+  On *LINUX*, JAVA_HOME can be found at (or in a similar location): `/usr/lib/jvm/java-8-openjdk-amd64`
 
 Set up Gradle wrapper
 ----------------
@@ -28,8 +29,7 @@ You can now use the built-in gradle task to setup Hbase.
 ./gradlew setupHbase
 ```
 
-* This will create directories within project directory to
-   store Hbase and Zookeeper data.
+* This will create directories within the project directory to store Hbase and Zookeeper data.
 * Downloads hbase-0.98.8-hadoop2 in build directory.
 
 Now, startup hbase service by going into the hbase directory: _projectDir_/build/hbase-0.98.8-hadoop2/bin/
@@ -87,8 +87,8 @@ To build the plugin, run:
 ./gradlew buildPlugin
 ```
 
-This will take about 4-5 minutes to complete. It may hang a bit; please be patient. 
-That's it. Everything is now setup to crawl websites.
+This will take about 4-5 minutes to complete; please be patient. 
+That's it. Everything is now set up to crawl websites.
 
 Adding new Domains to crawl with Nutch
 --------------------------------------
@@ -100,7 +100,7 @@ Adding new Domains to crawl with Nutch
   $ echo "https://en.wikipedia.org/wiki/Apache_Nutch" >> $projectDir/seed/urls.txt
   ```
 
-2. inject them into Nutch by giving a file URL (!)
+2. Inject them into Nutch by providing a file URL (!)
 
   ```bash
   $projectDir/build/apache-nutch-2.3.1/runtime/local/bin/nutch inject file:///path/to/seed/
@@ -117,7 +117,7 @@ Actual Crawling Procedure
 
   The above command will create job batches for 5 URLs. You can also increase/decrease this number.
 
-2. Fetch the URLs. We are not clustering, so we can simply fetch all batches:
+2. Fetch the URLs:
 
   ```bash
   $projectDir/build/apache-nutch-2.3.1/runtime/local/bin/nutch fetch -all
