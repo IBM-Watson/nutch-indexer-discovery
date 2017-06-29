@@ -19,5 +19,6 @@ RUN mkdir nutch-indexer-discovery/seed
 COPY seed /nutch-indexer-discovery/seed
 
 COPY docker_scripts nutch-indexer-discovery/
+COPY crawl nutch-indexer-discovery
 
 RUN cd /nutch-indexer-discovery && ./build_nutch_discovery.sh
