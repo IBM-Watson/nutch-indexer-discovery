@@ -93,57 +93,19 @@ That's it. Everything is now set up to crawl websites.
 Adding new Domains to crawl with Nutch
 --------------------------------------
 
-1. Edit the text file `seed/urls.txt` containing a list of seed URLs.
+1. Edit the text file `seed/urls.txt` to specify a list of seed URLs.
 
   ```bash
   $ mkdir seed
   $ echo "https://en.wikipedia.org/wiki/Apache_Nutch" >> $projectDir/seed/urls.txt
   ```
 
-2. Inject them into Nutch by providing a file URL (!)
-
-  ```bash
-  $projectDir/build/apache-nutch-2.3.1/runtime/local/bin/nutch inject file:///path/to/seed/
-  ```
-
-Actual Crawling Procedure
--------------------------
-
-1. Generate a new set of URLs to fetch. This is based on both the injected URLs as well as outdated URLs in the Nutch crawl db.
-
-  ```bash
-  $projectDir/build/apache-nutch-2.3.1/runtime/local/bin/nutch generate -topN 5
-  ```
-
-  The above command will create job batches for 5 URLs. You can also increase/decrease this number.
-
-2. Fetch the URLs:
-
-  ```bash
-  $projectDir/build/apache-nutch-2.3.1/runtime/local/bin/nutch fetch -all
-  ```
-
-3. Now we parse all fetched pages:
-
-  ```bash
-  $projectDir/build/apache-nutch-2.3.1/runtime/local/bin/nutch parse -all
-  ```
-
-4. Last step: Update Nutch's internal database:
-
-  ```bash
-  $projectDir/build/apache-nutch-2.3.1/runtime/local/bin/nutch updatedb -all
-  ```
-
-On the first run, this will only crawl the injected URLs. The procedure above is supposed to be repeated regularly to keep the index up to date.
-
-Putting Documents into Discovery
-------------------------------------
+Crawl and Index
+----------------
 
 ```bash
-$projectDir/build/apache-nutch-2.3.1/runtime/local/bin/nutch index -all
+$projectDir/crawl
 ```
 
-## Contributing
+Note: On the first run, this will only crawl the injected URLs. The procedure above is supposed to be repeated regularly to keep the index up to date.
 
-Look at the Nutch source in `src/plugin/indexer-*` for examples of other indexer plugins.
