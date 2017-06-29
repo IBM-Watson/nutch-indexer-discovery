@@ -1,9 +1,7 @@
 
-group: bluezone
 sudo: false
 language: java
 before_install:
- - sudo apt-get remove ant
  - wget https://archive.apache.org/dist/ant/binaries/binaries/apache-ant-1.9.4-bin.tar.gz
  - tar -xvf apache-ant-1.9.4-bin.tar.gz
  - wget http://mirror.reverse.net/pub/apache//ant/ivy/2.4.0/apache-ivy-2.4.0-bin.tar.gz

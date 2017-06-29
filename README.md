@@ -1,6 +1,5 @@
 # IBM Watson Discovery Service IndexWriter plugin for Apache Nutch
 
-[![Build Status](https://travis.ibm.com/watson-crawler/nutch-indexer-discovery.svg?token=xxVzTKgArtoDziLUGyrh&branch=master)](https://travis.ibm.com/watson-crawler/nutch-indexer-discovery/)
 
 Requirements
 ------------
