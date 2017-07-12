@@ -1,5 +1,8 @@
 # IBM Watson Discovery Service IndexWriter plugin for Apache Nutch
 
+Windows
+-------
+If you are running on Windows, please follow the README [here](https://gist.github.com/arunsure/14e497339ee81aff70356c05ce260eaa)
 
 Requirements
 ------------
