@@ -52,6 +52,8 @@ Download and extract apache-nutch-2.3.1 in the build directory:
 
 Then edit `conf/nutch-discovery/nutch-site.xml` with Discovery credentials. The values for the first three properties (endpoint, username, and password) are provided by the Discovery service. The others are provided by your specific instance of the Discovery service.
 
+Note: If you are using a Discovery Service Instance, which needs IAM authentication, then set `discovery.username` to `apikey` and `discovery.password` to the value of the apikey.
+
 ```xml
   <property>
     <name>discovery.endpoint</name>
