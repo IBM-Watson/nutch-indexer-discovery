@@ -20,7 +20,7 @@ plugins {
 ext {
   nutchVersion = "2.3.1"
   hbaseVersion = "0.98.8"
-  nutchUrl = "http://apache.claz.org/nutch/${nutchVersion}/apache-nutch-${nutchVersion}-src.tar.gz"
+  nutchUrl = "http://apache.mirrors.pair.com/nutch/${nutchVersion}/apache-nutch-${nutchVersion}-src.tar.gz"
   hbaseUrl = "https://archive.apache.org/dist/hbase/hbase-${hbaseVersion}/hbase-${hbaseVersion}-hadoop2-bin.tar.gz"
   hbaseTarFile = "hbase-${hbaseVersion}.tar.gz"
   nutchTarFile = "apache-nutch-${nutchVersion}.tar.gz"
@@ -110,4 +110,3 @@ if(project.tasks.findByName('runtime')){
     }
   }
 }
-
